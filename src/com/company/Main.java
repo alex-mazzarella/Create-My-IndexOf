@@ -17,8 +17,9 @@ public class Main extends ConsoleProgram{
     }
 
     public void run(){
-
-       int position = myIndexOf(insertMainString(),insertCheckString()); //called checkString instead of subString
+        String mainString=insertMainString();
+        String checkString = insertCheckString();
+       int position = myIndexOf(mainString,checkString,insertStartPosition(mainString.length())); //called checkString instead of subString
         // to not create confusion with the method substring()
         if(position>0){
             println("Your substring was found, it starts at position "+position);
@@ -44,13 +45,21 @@ public class Main extends ConsoleProgram{
         return enteredWord;
     }
 
+    private int insertStartPosition(int maxValue){
+        int enterPosition;
+        do {            //do while prevents the algorithm to move forward if
+            // the user hits ENTER before adding any number
+            enterPosition = readInt("Enter the position 0 - "+maxValue+": ");
+        } while ((enterPosition<-1)&&(enterPosition>maxValue));
+        return enterPosition;
+    }
+
     /**compares a string and the substring (passed as parameters). if substring is found,
      * returns the index (int), if it is not found, returns -1
-     * @param mainString
-     * @param checkString
      */
-    private int myIndexOf(String mainString, String checkString){
-        int counter=0;
+
+    private int myIndexOf(String mainString, String checkString, int startPosition){
+        int counter=startPosition;
         String str;
         while(whileConditionMyIndexOf(mainString,checkString, counter)){
             str=mainString.substring(counter,checkString.length()+counter);
@@ -70,7 +79,6 @@ public class Main extends ConsoleProgram{
         // main string minus the length of the substring
         //as there is no point to keep comparing if the remaining portion of
         // main string is lesser than the length of the substring
-        return (counter < mainString.length()) &&
-                (counter < (mainString.length() - checkString.length() - 1));
+        return (counter <= (mainString.length() - checkString.length()));
     }
 }
